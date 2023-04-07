@@ -16,6 +16,14 @@ public class UserInfo {
         return userSocket;
     }
 
+    public void closeSocket() {
+        try {
+            userSocket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public ObjectOutputStream getUserObjectOutputStream() {
         return oos;
     }
