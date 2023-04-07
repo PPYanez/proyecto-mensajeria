@@ -13,6 +13,15 @@ public class Client {
     public static void main(String[] args) {
         try {
             Socket socket = new Socket("localhost", port);
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+            boolean isServerFull = (boolean) ois.readObject();
+
+            if (isServerFull) {
+                System.out.println("Server is full. Try again later.");
+                ois.close();
+                return;
+            }
+
             Thread sendThread = new Thread(() -> sendMessages(socket));
             sendThread.start();
 
