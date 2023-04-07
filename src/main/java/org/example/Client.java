@@ -25,14 +25,16 @@ public class Client {
             Thread sendThread = new Thread(() -> sendMessages(socket));
             sendThread.start();
 
-            Thread listenThread = new Thread(() -> listenMessages(socket));
+            Thread listenThread = new Thread(() -> listenMessages(ois));
             listenThread.start();
 
             sendThread.join();
             socket.close();
+
+            System.out.println("Goodbye!");
         } catch (ConnectException e) {
             System.out.println("Server not available.");
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
@@ -53,14 +55,12 @@ public class Client {
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Connection closed.");
         }
     }
 
-    private static void listenMessages(Socket socket) {
+    private static void listenMessages(ObjectInputStream ois) {
         try {
-            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-
             while(true) {
                 String encryptedMessage = (String) ois.readObject();
                 String message = Cryptography.decoder(encryptedMessage);
