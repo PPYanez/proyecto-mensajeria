@@ -29,7 +29,14 @@ public class ClientHandler {
                     }
                 }
             }
+
+            // Cleanup
+            ois.close();
+            socket.close();
+            Server.clients.remove(currentClient);
         } catch (IOException e) {
+            currentClient.closeSocket();
+            Server.clients.remove(currentClient);
             System.out.println("Client disconnected.");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
