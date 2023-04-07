@@ -16,7 +16,7 @@ public class Server {
             while (true) {
                 Socket socket = serverSocket.accept();
                 ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-                // Check length of clients arraylist
+
                 if (clients.size() < 2) {
                     // Set isServerFull flag
                     oos.writeObject(false);
