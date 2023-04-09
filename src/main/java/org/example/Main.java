@@ -8,13 +8,12 @@ public class Main {
         boolean serverUp = checkServerStatus();
     }
 
-    private static boolean checkServerStatus() {
-        /**
-         * Apache's camel implementation to check if a server is up or not
-         * in the local network
-         * @param port the port to check for availability
-         */
-
+    /**
+     * Apache's camel implementation to check if a server is up or not
+     * in the local network
+     **/
+    private static boolean checkServerStatus()
+    {
         boolean serverUp = true;
 
         ServerSocket ss = null;
