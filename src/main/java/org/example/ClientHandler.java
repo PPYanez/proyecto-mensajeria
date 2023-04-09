@@ -9,7 +9,6 @@ public class ClientHandler {
     public static void handleClient(UserInfo currentClient) {
         try{
             Socket socket = currentClient.getUserSocket();
-
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 
             while(true){
@@ -24,12 +23,19 @@ public class ClientHandler {
                     for(UserInfo client : Server.clients){
                         if(socket != client.getUserSocket()){
                             ObjectOutputStream clientOos = client.getUserObjectOutputStream();
-                            clientOos.writeObject(message);
+                            clientOos.writeObject(encryptedMessage);
                         }
                     }
                 }
             }
+
+            // Cleanup
+            ois.close();
+            socket.close();
+            Server.clients.remove(currentClient);
         } catch (IOException e) {
+            currentClient.closeSocket();
+            Server.clients.remove(currentClient);
             System.out.println("Client disconnected.");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);

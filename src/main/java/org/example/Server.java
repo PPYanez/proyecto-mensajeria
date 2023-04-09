@@ -16,9 +16,11 @@ public class Server {
             while (true) {
                 Socket socket = serverSocket.accept();
                 ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-                // Check length of clients arraylist
+
                 if (clients.size() < 2) {
-                    System.out.println("Client connected.");
+                    // Set isServerFull flag
+                    oos.writeObject(false);
+                    System.out.println("\u001B[31mClient connected.\u001B[0m");
 
                     UserInfo client = new UserInfo(socket, oos);
                     clients.add(client);
@@ -27,7 +29,8 @@ public class Server {
                     Thread clientThread = new Thread(() -> ClientHandler.handleClient(client));
                     clientThread.start();
                 } else {
-                    oos.writeObject("Server is full, try again later.");
+                    // Set isServerFull flag
+                    oos.writeObject(true);
                     oos.close();
                     socket.close();
                 }
