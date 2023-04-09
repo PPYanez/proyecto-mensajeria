@@ -13,11 +13,13 @@ public class ClientHandler {
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 
             while(true){
-                String message = (String) ois.readObject();
+                String encryptedMessage = (String) ois.readObject();
+                String message = Cryptography.decoder(encryptedMessage);
+
                 if (message.equals("exit")) {
                     break;
                 } else {
-                    System.out.println("Received message: " + message);
+                    System.out.println("Received: " + message);
 
                     for(UserInfo client : Server.clients){
                         if(socket != client.getUserSocket()){
@@ -28,7 +30,7 @@ public class ClientHandler {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Client disconnected.");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
