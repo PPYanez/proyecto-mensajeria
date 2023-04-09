@@ -5,10 +5,10 @@ import java.net.*;
 
 public class Main {
     public static void main(String[] args) {
-        boolean serverUp = checkServerStatus(6666);
+        boolean serverUp = checkServerStatus();
     }
 
-    private static boolean checkServerStatus(int port) {
+    private static boolean checkServerStatus() {
         /**
          * Apache's camel implementation to check if a server is up or not
          * in the local network
