@@ -18,6 +18,8 @@ public class Server {
                 ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                 // Check length of clients arraylist
                 if (clients.size() < 2) {
+                    System.out.println("Client connected.");
+
                     UserInfo client = new UserInfo(socket, oos);
                     clients.add(client);
 
