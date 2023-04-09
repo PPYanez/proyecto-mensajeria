@@ -6,6 +6,11 @@ import java.net.*;
 public class Main {
     public static void main(String[] args) {
         boolean serverUp = checkServerStatus();
+        if (serverUp) {
+            System.out.println("Server up, yay!");
+        } else {
+            Server.main(null);
+        }
     }
 
     /**
