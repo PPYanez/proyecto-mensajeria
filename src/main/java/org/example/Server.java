@@ -11,7 +11,7 @@ public class Server {
     // Array that holds the clients
     public static ArrayList<UserInfo> clients = new ArrayList<>();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             while (true) {
                 Socket socket = serverSocket.accept();
@@ -35,6 +35,8 @@ public class Server {
                     socket.close();
                 }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
