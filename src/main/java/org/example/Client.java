@@ -1,5 +1,8 @@
 package org.example;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -9,6 +12,7 @@ import java.util.Scanner;
 
 public class Client {
     private static final int port = 6666;
+    private static Logger logger = LogManager.getLogger();
 
     public static void main(String[] args) {
         try {
@@ -30,10 +34,11 @@ public class Client {
 
             sendThread.join();
             socket.close();
-
+            logger.info("Disconnected client");
             System.out.println("Goodbye!");
         } catch (ConnectException e) {
             System.out.println("Server not available.");
+            logger.error("Server not available");
         } catch (IOException | InterruptedException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -52,6 +57,7 @@ public class Client {
                     break;
                 } else {
                     oos.writeObject(encryptedMessage);
+                    logger.info("Message sent");
                 }
             }
         } catch (IOException e) {
@@ -66,9 +72,11 @@ public class Client {
                 String message = Cryptography.decoder(encryptedMessage);
 
                 System.out.println("Received: " + message);
+                logger.info("Message received");
             }
         } catch (ClassNotFoundException e) {
             System.out.println("Incoming message could not be read.");
+            logger.warn("Message could not be read");
         } catch (IOException e) {
             System.out.println("Connection closed.");
         }
